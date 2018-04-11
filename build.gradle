@@ -49,4 +49,8 @@ shadowJar {
     baseName = 'pythagoras'
     classifier = null
     version = null
+
+    transform(com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer) {
+        resource = 'reference.conf'
+    }
 }

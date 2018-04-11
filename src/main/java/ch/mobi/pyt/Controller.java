@@ -36,6 +36,11 @@ public class Controller {
      */
     public final int port;
 
+    /**
+     * The materializing ActorSystem
+     */
+    public final ActorSystem system;
+
     private static final Logger LOG = LoggerFactory.getLogger(Controller.class);
     private final CompletionStage<ServerBinding> binding;
 
@@ -44,10 +49,11 @@ public class Controller {
      *
      * @param binding The Akka HTTP binding
      */
-    private Controller(String hostname, int port, CompletionStage<ServerBinding> binding) {
+    private Controller(ActorSystem system, String hostname, int port, CompletionStage<ServerBinding> binding) {
         this.binding = binding;
         this.hostname = hostname;
         this.port = port;
+        this.system = system;
     }
 
     /**
@@ -62,6 +68,7 @@ public class Controller {
         if (console != null) {
             System.out.println("");
             System.out.println("Press ENTER to stop the server");
+            console.readLine();
             controller
                 .stop()
                 .thenAccept(done -> {
@@ -88,6 +95,7 @@ public class Controller {
     public CompletionStage<Done> stop() {
         CompletionStage<Done> done = binding
             .thenCompose(ServerBinding::unbind)
+            .thenApply(any -> system.terminate())
             .thenApply(any -> Done.getInstance());
 
         done.thenAccept(d -> LOG.info(String.format("Stopped API-Server on http://%s:%s", hostname, port)));
@@ -115,7 +123,7 @@ public class Controller {
 
         LOG.info(String.format("Started API-Server on http://%s:%s", hostname, port));
 
-        return new Controller(hostname, port, binding);
+        return new Controller(system, hostname, port, binding);
     }
 
 }
