@@ -8,7 +8,7 @@ buildscript {
     }
 }
 
-group 'ch.mobiliar.pyt'
+group 'ch.mobi.pyt'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
@@ -18,7 +18,7 @@ apply plugin: 'application'
  * mainClassName must be specified before applying shadow plugin
  * see https://github.com/johnrengelman/shadow/issues/336
  */
-mainClassName = 'ch.mobiliar.pyt.Controller'
+mainClassName = 'ch.mobi.pyt.Controller'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceCompatibility = 1.8
@@ -35,10 +35,13 @@ repositories {
 
 dependencies {
     compile group: 'com.typesafe.akka', name: 'akka-actor_2.12', version: akkaVersion
+    compile group: 'com.typesafe.akka', name: 'akka-http_2.12', version: akkaHttpVersion
     compile group: 'com.typesafe.akka', name: 'akka-slf4j_2.12', version: akkaVersion
     compile group: 'com.typesafe.akka', name: 'akka-stream_2.12', version: akkaVersion
-    compile group: 'com.typesafe.akka', name: 'akka-http_2.12', version: akkaHttpVersion
+    compile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
 
+    testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.7'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
