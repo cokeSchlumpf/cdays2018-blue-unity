@@ -14,6 +14,7 @@ import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import scala.compat.java8.FutureConverters;
 
 import java.io.Console;
 import java.io.IOException;
@@ -95,7 +96,7 @@ public class Controller {
     public CompletionStage<Done> stop() {
         CompletionStage<Done> done = binding
             .thenCompose(ServerBinding::unbind)
-            .thenApply(any -> system.terminate())
+            .thenComposeAsync(any -> FutureConverters.toJava(system.terminate()))
             .thenApply(any -> Done.getInstance());
 
         done.thenAccept(d -> LOG.info(String.format("Stopped API-Server on http://%s:%s", hostname, port)));
