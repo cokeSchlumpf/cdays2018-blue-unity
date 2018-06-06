@@ -8,7 +8,7 @@ buildscript {
     }
 }
 
-group 'ch.mobi.pyt'
+group 'com.ibm.cdays'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
@@ -18,7 +18,7 @@ apply plugin: 'application'
  * mainClassName must be specified before applying shadow plugin
  * see https://github.com/johnrengelman/shadow/issues/336
  */
-mainClassName = 'ch.mobi.pyt.Controller'
+mainClassName = 'com.ibm.cdays.Application'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 sourceCompatibility = 1.8
@@ -27,6 +27,9 @@ targetCompatibility = 1.8
 ext {
     akkaVersion = '2.5.11'
     akkaHttpVersion = '10.1.1'
+
+    jacksonVersion = '2.9.4'
+    kafkaVersion = '1.0.0'
 }
 
 repositories {
@@ -34,19 +37,41 @@ repositories {
 }
 
 dependencies {
+    compile group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: jacksonVersion
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: jacksonVersion
+    compile group: 'com.lightbend.akka', name: 'akka-stream-alpakka-elasticsearch_2.12', version: '0.17'
+    compile group: 'com.squareup.okhttp3', name: 'okhttp', version: '3.10.0'
     compile group: 'com.typesafe.akka', name: 'akka-actor_2.12', version: akkaVersion
     compile group: 'com.typesafe.akka', name: 'akka-http_2.12', version: akkaHttpVersion
+    compile group: 'com.typesafe.akka', name: 'akka-http-jackson_2.12', version: akkaHttpVersion
     compile group: 'com.typesafe.akka', name: 'akka-slf4j_2.12', version: akkaVersion
     compile group: 'com.typesafe.akka', name: 'akka-stream_2.12', version: akkaVersion
+    compile group: 'com.typesafe.akka', name: 'akka-stream-kafka_2.12', version: '0.19'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
+    compile group: 'info.picocli', name: 'picocli', version: '3.0.0'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+    compile group: 'org.apache.curator', name: 'curator-test', version: '4.0.1'
+    compile group: 'org.apache.kafka', name: 'kafka_2.12', version: kafkaVersion
+    compile group: 'org.apache.kafka', name: 'kafka-clients', version: kafkaVersion
+    compile group: 'org.javatuples', name: 'javatuples', version: '1.2'
+    compile group: 'org.jsoup', name: 'jsoup', version: '1.11.2'
+    compile group: 'org.jtwig', name: 'jtwig-core', version: '5.87.0.RELEASE'
+    compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.0'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
+    compile group: 'pl.allegro.tech', name: 'embedded-elasticsearch', version: '2.5.0'
 
+    testCompile group: 'com.thedeanda', name: 'lorem', version: '2.1'
+    testCompile group: 'com.tngtech.jgiven', name: 'jgiven-junit', version: '0.15.3'
+    testCompile group: 'com.typesafe.akka', name: 'akka-testkit_2.12', version: akkaVersion
     testCompile group: 'io.rest-assured', name: 'rest-assured', version: '3.0.7'
     testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.easymock', name: 'easymock', version: '3.5.1'
 }
 
 shadowJar {
-    baseName = 'pythagoras'
+    baseName = 'cdays'
     classifier = null
     version = null
 

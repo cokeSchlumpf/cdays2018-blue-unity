@@ -1,0 +1,10 @@
+---
+applications:
+- name: cdays
+  memory: 1G
+  instances: 1
+  buildpack: java_buildpack
+  path: build/libs/cdays.jar
+
+  env:
+    JAVA_OPTS: "-Dcdays.environment=dev"
